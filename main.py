@@ -118,17 +118,12 @@ def start_game(start_place, inventory):
                 print (thing.description + "\n")
         elif command == "inventory":
             if inventory:
-                print ("you have: ")
+                print ("you have:\n")
                 for item in inventory:
-                    print (item.name)
+                    print ("\t" + item.name)
+                print("\n")
             else:
-                print ("EMPTY INVENTORY")
-
-
-
-
-
-
+                print ("EMPTY INVENTORY\n")
 
         else:
             print("What?")
