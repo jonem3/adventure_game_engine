@@ -142,6 +142,7 @@ def start_game(start_place, inventory):
             sleep(5)
             exit(0)
 
+
 if __name__ == "__main__":
     """Load the game, run it"""
 
