@@ -90,5 +90,5 @@ ENV/
 .ropeproject
 
 /.idea
-
+*.lnk
 ~$*
