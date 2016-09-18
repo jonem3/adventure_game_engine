@@ -12,7 +12,7 @@ def load_game():
     sheet_names = wb.get_sheet_names()
     sheet = ""
     while sheet not in sheet_names:
-        print("Please choose one of the following game s:")
+        print("Please choose one of the following games:")
 
         for sheet_name in sheet_names:
             print(sheet_name)
