@@ -33,9 +33,13 @@ class Place:
         self.items = []
         self.death = death
         self.won = won
+        self.select = None
 
     def add_item(self, item):
         self.items.append(item)
+
+    def add_select(self, select):
+        self.select = select
 
     def add_place(self, direction, place):
         if direction.__class__.__name__ != "Direction":
@@ -73,3 +77,20 @@ class Place:
         else:
             print("You have moved "+direction.name)
             return new_place
+
+
+class Select:
+    def __init__(self, start_place, text):
+        self.start_place = start_place
+        self.text = text
+        self.options = {}
+
+    def add_option(self, option_number, option):
+        self.options [option_number] = option
+
+
+class Option:
+    def __init__(self, text, destination ):
+        self.text = text
+        self.destination = destination
+

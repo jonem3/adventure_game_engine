@@ -1,5 +1,5 @@
 #!python
-from model.model import Place, Direction, Item
+from model.model import Place, Direction, Item, Select, Option
 from time import sleep
 from openpyxl import load_workbook
 
@@ -9,6 +9,7 @@ def load_game():
     wb = load_workbook(filename="game_files/nasty_house.xlsx")
     start_place = None
     places = {}
+    selects = {}
     sheet_names = wb.get_sheet_names()
     sheet = ""
     while sheet not in sheet_names:
@@ -44,7 +45,27 @@ def load_game():
             destination = places[row[5].value]
             item = Item (item_name, item_description, place_found, place_used, destination)
             place_found.add_item(item)
-            
+        elif command == "SELECT":
+            select_id = row[1].value
+            select_place_id = row[2].value
+            select_text = row[3].value
+            select_place = places[select_place_id]
+            select = Select(select_place, select_text)
+            selects[select_id] = select
+            select_place.add_select(select)
+        elif command == "OPTION":
+            select_id = row[1].value
+            option_id = str(row[2].value)
+            option_text = row[3].value
+            option_destination_id = row[4].value
+            option_destination = places[option_destination_id]
+            option = Option(option_text, option_destination)
+            select = selects[select_id]
+            select.add_option(option_id, option)
+
+
+
+
     
     
     
@@ -54,6 +75,20 @@ def load_game():
 def display_room_info (current_place):
     print ("You are in the "+ current_place.name)
     print (current_place.description)
+    if current_place.select:
+        print(current_place.select.text)
+        opt_dict = current_place.select.options
+        for option_number in sorted(opt_dict):
+            text = opt_dict[option_number].text
+            print("\t{0} : {1}".format(option_number, text))
+
+def is_number(value):
+    try:
+        int(value)
+        return True
+    except ValueError:
+        return False
+
 
 def start_game(start_place, inventory):
     current_place = start_place
@@ -124,6 +159,16 @@ def start_game(start_place, inventory):
                 print("\n")
             else:
                 print ("EMPTY INVENTORY\n")
+        elif is_number(command):
+            ok = False
+            if current_place.select:
+                options = current_place.select.options
+                if command in options:
+                    option = options[command]
+                    ok = True
+                    new_place = option.destination
+            if not ok:
+                print("I don't know what you mean")
 
         else:
             print("What?")
